@@ -62,10 +62,6 @@ public class CoffeeMachine {
     public void process(String userInput) {
         Action userAction = Action.getRefByValue(userInput);
 
-        if (userAction == null) {
-            return;
-        }
-
         switch (userAction) {
             case BUY:
                 processOrder();
@@ -90,7 +86,8 @@ public class CoffeeMachine {
         TAKE ("take"),
         REMAINING ("remaining"),
         EXIT ("exit"),
-        BACK ("back");
+        BACK ("back"),
+        NONE ("none");
 
         private final String input;
 
@@ -104,14 +101,15 @@ public class CoffeeMachine {
                     return action;
                 }
             }
-            return null;
+            return Action.NONE;
         }
     }
 
     private enum CoffeeType {
         ESPRESSO (1, 250, 0, 16, 4),
         LATTE (2, 350, 75, 20, 7),
-        CAPPUCCINO (3, 200, 100, 12, 6);
+        CAPPUCCINO (3, 200, 100, 12, 6),
+        NONE (0, 10000, 10000, 10000, 0);
 
         private final int type;
         private final int reqWater;
@@ -133,7 +131,7 @@ public class CoffeeMachine {
                     return coffeeType;
                 }
             }
-            return null;
+            return CoffeeType.NONE;
         }
     }
 
@@ -155,11 +153,6 @@ public class CoffeeMachine {
     }
 
     private void makeCoffee(CoffeeType coffeeType) {
-
-        if (coffeeType == null) {
-            System.out.println("Wrong input!");
-            return;
-        }
 
         if (getWater() < coffeeType.reqWater) {
             System.out.println("Sorry, not enough water!");
